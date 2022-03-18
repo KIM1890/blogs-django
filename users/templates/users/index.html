@@ -1,22 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "users/base.html" %}
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="alert alert-success" role="alert">
+    <h3>Welcome {{ user.username }}!</h3>
+    <a href="{% url 'logout' %}">Logout?</a>
+</div>
+{% else %}
+<div class="alert alert-success" role="alert">
+    <h3>Welcome To WebSite</h3>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit">Upload</button>
     </form>
-
+    <!-- upload image  -->
     {% if img_obj %}
-        <h3>Succesfully uploaded : {{img_obj.title}}</h3>
-        <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
-        
+    <h3>Succesfully Upload Image:{{img_obj.captions}}</h3>
+    <img src="{{img_obj.image.url}}" alt="Connect" style="max-height: 300px;">
     {% endif %}
-</body>
-</html>
+    <br><br>
+    <a href="{% url 'register' %}">Signup</a>
+    <a href="{% url 'login' %}">Login</a>
+</div>
+{% endif %}
+
+{% endblock %}
